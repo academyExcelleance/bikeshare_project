@@ -32,11 +32,11 @@ jobs:
 
       - name: Train the bikeshare model and create the pkl file
         run: |
-          python bikeshare_project/bikeshare_model/train_pipeline.py
+          python /bikeshare_model/train_pipeline.py
 
       - name: Run pytest
         run: |
-          pytest bikeshare_project/tests
+          pytest /tests
 
       - name: Install the build package and run the build process on the bikeshare model to generate the wheel file
         run: |
@@ -46,13 +46,13 @@ jobs:
     #   - name: Upload wheel file
     #     run: |
     #       ls -l bikeshare_project/dist
-    #       cp bikeshare_project/dist/*.whl bikeshare_project/bike_sharing_api
-    #       ls -l bikeshare_project/bike_sharing_api
+    #       cp /dist/*.whl bikeshare_project/bike_sharing_api
+    #       ls -l /bike_sharing_api
       - name: Upload wheel file
         uses: actions/upload-artifact@v4
         with:
             name: bikeshare_model-0.0.1-py3-none-any.whl
-            path: bikeshare_project/dist/*.whl
+            path: /dist/*.whl
 
   docker:
     runs-on: ubuntu-latest
@@ -73,13 +73,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
            name: bikeshare_model-0.0.1-py3-none-any.whl  
-           path: bikeshare_project/bike_sharing_api
+           path: /bike_sharing_api
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: ./bikeshare_project/bike_sharing_api
-          file: ./bikeshare_project/bike_sharing_api/Dockerfile
+          file: ./bike_sharing_api/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/bikespare_api:latest
 
